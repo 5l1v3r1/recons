@@ -19,6 +19,7 @@ def sizeof_fmt(num, suffix='b'):
         num /= 1024.0
     return "%.1f%s%s" % (num, 'Yi', suffix)
 
+
 @sched.scheduled_job('interval', minutes=1)
 def resources():
     cpu1, cpu2 = psutil.cpu_percent(interval=1, percpu=True)

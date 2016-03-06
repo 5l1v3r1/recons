@@ -17,7 +17,10 @@ def tail(out):
 
 def runcmd(chat_id, cmd):
     try:
-        args = shlex.split(cmd)
+        if ord(cmd[0]) == ord('!'):
+            args = ['sh', '-c', cmd[1:]]
+        else:
+            args = shlex.split(cmd)
         proc = subprocess.Popen(args, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, bufsize=3)
         bot.sendMessage(chat_id, cmd + ': ' + str(proc.pid))
         _out = str(tail(proc.stdout), 'utf-8')
@@ -30,5 +33,4 @@ def runcmd(chat_id, cmd):
             traceback.print_exception(*exc_info)
             del exc_info
         print(e)
-        print(e.with_traceback())
         bot.sendMessage(chat_id, 'ERROR: ' + str(e))
